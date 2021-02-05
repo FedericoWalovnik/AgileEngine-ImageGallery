@@ -1,21 +1,27 @@
 <template>
-  <img :src="src" alt="image" />
+  <img class="is-clickable" :src="src" :alt="alt" @click="emitId" />
 </template>
 
 <script>
-//import axios from "axios";
-
 export default {
   name: "gridImage",
-  data() {
-    return {
-      bearerToken: ""
-    };
-  },
   props: {
+    id: {
+      required: true,
+      type: String
+    },
     src: {
       required: true,
       type: String
+    },
+    alt: {
+      required: true,
+      type: String
+    }
+  },
+  methods: {
+    emitId(){
+      this.$emit('imageClick', this.id);
     }
   }
 };

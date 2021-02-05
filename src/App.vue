@@ -1,26 +1,13 @@
 <template>
   <main>
-    <grid-gallery
-      src="https://agileengine.com/wordpress/wp-content/uploads/2018/12/logo.png"
-    ></grid-gallery>
+    <images-list />
   </main>
 </template>
 
 <script>
-import GridGallery from './components/gridGallery.vue';
+import ImagesList from "./views/imagesList.vue";
 export default {
   name: "App",
-  components: { GridGallery },
+  components: { ImagesList }
 };
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

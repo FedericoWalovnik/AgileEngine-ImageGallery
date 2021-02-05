@@ -1,18 +1,16 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-  </div>
+  <main>
+    <grid-gallery
+      src="https://agileengine.com/wordpress/wp-content/uploads/2018/12/logo.png"
+    ></grid-gallery>
+  </main>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-
+import GridGallery from './components/gridGallery.vue';
 export default {
   name: "App",
-  components: {
-    HelloWorld
-  }
+  components: { GridGallery },
 };
 </script>
 

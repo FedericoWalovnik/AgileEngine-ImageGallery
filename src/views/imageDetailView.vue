@@ -7,6 +7,24 @@
         @close="handleCloseImage"
         icon-pack="fa"
       >
+        <div class="is-flex is-justify-content-space-around">
+          <b-icon
+            class="has-text-white is-clickable"
+            icon="arrow-circle-left"
+            size="is-large"
+            pack="fa"
+            @click="previousImage"
+          >
+          </b-icon>
+          <b-icon
+            class="has-text-white is-clickable"
+            icon="arrow-circle-right"
+            size="is-large"
+            pack="fa"
+            @click="nextImage"
+          >
+          </b-icon>
+        </div>
         <p class="image is-5by3">
           <single-image
             class="image"
@@ -17,7 +35,7 @@
         <image-details
           :authorName="imageData.author"
           :cameraModel="imageData.camera"
-          :hashtags="imageData.hashtags"
+          :hashtags="imageData.tags ? imageData.tags : 'none'"
         />
       </b-modal>
     </template>
@@ -45,11 +63,14 @@ export default {
   methods: {
     handleCloseImage() {
       this.$router.push({ name: "imageGallery" });
-    }
+    },
+    nextImage(){ this.$emit('nextImage', this.id); }
+
   },
   async mounted() {
     const id = this.$route.params.imageId;
     try {
+      await api.ensureBearerToken();
       const imageDetails = await api.getImageDetails(id);
       this.imageData = imageDetails.data;
     } catch (error) {

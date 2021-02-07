@@ -3,9 +3,8 @@ const baseUrl = "http://interview.agileengine.com";
 
 //intercept all the requests and add the authorization
 axios.interceptors.request.use(
-  function(config) {
-    const token = localStorage.getItem("token");
-    config.headers.Authorization = token;
+  async function(config) {
+    config.headers.Authorization = localStorage.getItem("token");
     return config;
   },
   function(error) {
@@ -14,17 +13,18 @@ axios.interceptors.request.use(
   },
 );
 
-const getBearerToken = async () => {
+const ensureBearerToken = async () => {
   try {
-    console.log(process.env.VUE_APP_API_TOKEN);
-    let response = await axios({
-      method: "post",
-      url: `${baseUrl}/auth`,
-      data: {
-        apiKey: "23567b218376f79d9415",
-      },
-    });
-    localStorage.setItem("token", response.data.token);
+    if (!localStorage.getItem("token")) {
+      let response = await axios({
+        method: "post",
+        url: `${baseUrl}/auth`,
+        data: {
+          apiKey: process.env.VUE_APP_API_TOKEN,
+        },
+      });
+      localStorage.setItem("token", response.data.token);
+    }
   } catch (error) {
     console.log(error);
   }
@@ -46,8 +46,16 @@ const getImageDetails = async (imageId) => {
   return response;
 };
 
+/*const hasToken = async () => {
+  if (localStorage.getItem("token")) {
+    return localStorage.getItem("token");
+  } else {
+    await hasToken
+  }
+};*/
+
 export default {
-  getBearerToken,
+  ensureBearerToken,
   getImages,
   getImageDetails,
 };

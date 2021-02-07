@@ -1,24 +1,11 @@
 # agile-engine-image-gallery
 
-## Project setup
+## 1. Install dependencies
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 2. Run development server
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

@@ -1,7 +1,7 @@
 <template>
   <div class="container is-fluid">
-    <div class="columns is-multiline" v-if="images.length > 0">
-      <div class="column is-3" v-for="image in images" :key="image.id">
+    <div class="columns is-multiline is-justify-content-center" v-if="images.length > 0">
+      <div class="column is-3 " v-for="image in images" :key="image.id">
         <grid-image :id="image.id" :src="image.cropped_picture" alt="image">
         </grid-image>
         <div class="container is-flex is-justify-content-center"></div>
@@ -12,10 +12,10 @@
     </template>
     <b-pagination
       class=""
-      :total="totalPages"
+      :total="totalElements"
       per-page="10"
-      range-before="3"
-      range-after="3"
+      range-before="2"
+      range-after="2"
       v-model="currentPage"
       order="is-centered"
       aria-next-label="Next page"
@@ -38,6 +38,7 @@ export default {
   methods: {
     async getData(page) {
       try {
+        await api.ensureBearerToken();
         const response = await api.getImages(page);
         return response;
       } catch (err) {
@@ -48,7 +49,7 @@ export default {
       const rawRequestData = await this.getData(this.currentPage);
       this.images = rawRequestData.data.pictures;
       this.current = rawRequestData.data.page;
-      this.totalPages = rawRequestData.data.pageCount;
+      this.totalElements = rawRequestData.data.pageCount * 10;
       this.isLoading = false;
     }
   },
@@ -56,7 +57,7 @@ export default {
     return {
       images: [],
       currentPage: 1,
-      totalPages: 26,
+      totalElements: 26,
       isLoading: true
     };
   },

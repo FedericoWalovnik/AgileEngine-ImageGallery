@@ -1,5 +1,8 @@
 <template>
-  <img class="is-clickable" :src="src" :alt="alt" @click="emitId" />
+  <router-link :to="{ name: 'imageDetail', params: {imageId: id }}"
+>
+    <img class="is-clickable" :src="src" :alt="alt" @click="emitId" />
+  </router-link>
 </template>
 
 <script>

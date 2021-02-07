@@ -1,20 +1,27 @@
 <template>
-  <div class="columns is-multiline">
+  <div class="container is-fluid">
     <div class="columns is-multiline" v-if="images.length > 0">
       <div class="column is-3" v-for="image in images" :key="image.id">
-        <grid-image :id="image.id" :src="image.cropped_picture" alt="image" @imageClick="clickImage">
+        <grid-image
+          :id="image.id"
+          :src="image.cropped_picture"
+          alt="image"
+          @imageClick="clickImage"
+        >
         </grid-image>
       </div>
     </div>
-    <div v-else>Data is loading</div>
+    <template v-else>
+      <b-loading :active="isLoading"></b-loading>
+    </template>
     <div class="container is-flex is-justify-content-center">
       <b-pagination
         class=""
         :total="totalPages"
         per-page="10"
-        range-before="2"
-        range-after="2"
-        v-model="current"
+        range-before="3"
+        range-after="3"
+        v-model="currentPage"
         order="is-centered"
         aria-next-label="Next page"
         aria-previous-label="Previous page"
@@ -27,30 +34,27 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from '@/api'
 import GridImage from "./gridImage.vue";
 
 export default {
   name: "GridGalleryView",
   components: { GridImage },
-  props: {
-    bearerToken: {
-      required: true,
-      type: String
-    }
-  },
   methods: {
-    async getData() {
+    async getData(page) {
       try {
-        let response = await axios({
-          method: "get",
-          url: "http://interview.agileengine.com/images",
-          headers: { authorization: this.bearerToken }
-        });
+        const response = await api.getImages(page);
         return response;
       } catch (err) {
         console.log(err);
       }
+    },
+    async updateData() {
+      const rawRequestData = await this.getData(this.currentPage);
+      this.images = rawRequestData.data.pictures;
+      this.current = rawRequestData.data.page;
+      this.totalPages = rawRequestData.data.pageCount;
+      this.isLoading = false;
     },
     clickImage(id) {
       console.log(id);
@@ -59,16 +63,18 @@ export default {
   data() {
     return {
       images: [],
-      current: 2,
-      totalPages: 26
+      currentPage: 1,
+      totalPages: 26,
+      isLoading: true
     };
   },
+  watch: {
+    async currentPage() {
+      await this.updateData();
+    }
+  },
   async mounted() {
-    const rawRequestData = await this.getData();
-    const parsedData = rawRequestData.data.pictures;
-    this.images = parsedData;
-    this.current = rawRequestData.data.page;
-    this.totalPages = rawRequestData.data.pageCount;
+    await this.updateData();
   }
 };
 </script>

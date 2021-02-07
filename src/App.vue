@@ -1,13 +1,11 @@
 <template>
   <main>
-    <images-list />
+    <router-view />
   </main>
 </template>
 
 <script>
-import ImagesList from "./views/imagesList.vue";
 export default {
-  name: "App",
-  components: { ImagesList }
+  name: "App"
 };
 </script>

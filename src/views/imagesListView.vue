@@ -8,9 +8,8 @@ import gridGallery from '../components/gridGallery.vue'
 
 export default {
   components: { gridGallery },
-  async mounted(){
+  async created(){
     await api.getBearerToken();
-
   }
 };
 </script>

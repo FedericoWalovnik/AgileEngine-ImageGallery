@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
-import imagesList from "@/views/imagesList";
-import imageDetail from "@/views/imageDetail";
+import imagesList from "@/views/imagesListView";
+import imageDetail from "@/views/imageDetailView";
 
 Vue.use(Router);
 
@@ -10,6 +10,7 @@ export default new Router({
   routes: [
     {
       path: "/",
+      name: "imageGallery",
       component: imagesList,
     },
     {

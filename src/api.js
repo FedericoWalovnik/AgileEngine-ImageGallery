@@ -16,6 +16,7 @@ axios.interceptors.request.use(
 
 const getBearerToken = async () => {
   try {
+    console.log(process.env.VUE_APP_API_TOKEN);
     let response = await axios({
       method: "post",
       url: `${baseUrl}/auth`,

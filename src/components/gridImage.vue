@@ -1,7 +1,7 @@
 <template>
   <router-link :to="{ name: 'imageDetail', params: {imageId: id }}"
 >
-    <img class="is-clickable" :src="src" :alt="alt" @click="emitId" />
+    <img class="is-clickable" :src="src" :alt="alt" />
   </router-link>
 </template>
 
@@ -20,11 +20,6 @@ export default {
     alt: {
       required: true,
       type: String
-    }
-  },
-  methods: {
-    emitId(){
-      this.$emit('imageClick', this.id);
     }
   }
 };

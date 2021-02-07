@@ -1,10 +1,10 @@
 <template>
-    <img class="is-clickable" :src="src" :alt="alt" />
+  <img class="is-clickable" :src="src" :alt="alt" />
 </template>
 
 <script>
 export default {
-  name: "gridImage",
+  name: "singleImage",
   props: {
     src: {
       required: true,

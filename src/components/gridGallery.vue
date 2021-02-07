@@ -2,39 +2,34 @@
   <div class="container is-fluid">
     <div class="columns is-multiline" v-if="images.length > 0">
       <div class="column is-3" v-for="image in images" :key="image.id">
-        <grid-image
-          :id="image.id"
-          :src="image.cropped_picture"
-          alt="image"
-          @imageClick="clickImage"
-        >
+        <grid-image :id="image.id" :src="image.cropped_picture" alt="image">
         </grid-image>
+        <div class="container is-flex is-justify-content-center"></div>
       </div>
     </div>
     <template v-else>
       <b-loading :active="isLoading"></b-loading>
     </template>
-    <div class="container is-flex is-justify-content-center">
-      <b-pagination
-        class=""
-        :total="totalPages"
-        per-page="10"
-        range-before="3"
-        range-after="3"
-        v-model="currentPage"
-        order="is-centered"
-        aria-next-label="Next page"
-        aria-previous-label="Previous page"
-        aria-page-label="Page"
-        aria-current-label="Current page"
-      >
-      </b-pagination>
-    </div>
+    <b-pagination
+      class=""
+      :total="totalPages"
+      per-page="10"
+      range-before="3"
+      range-after="3"
+      v-model="currentPage"
+      order="is-centered"
+      aria-next-label="Next page"
+      aria-previous-label="Previous page"
+      aria-page-label="Page"
+      aria-current-label="Current page"
+      icon-pack="fa"
+    >
+    </b-pagination>
   </div>
 </template>
 
 <script>
-import api from '@/api'
+import api from "@/api";
 import GridImage from "./gridImage.vue";
 
 export default {
@@ -55,9 +50,6 @@ export default {
       this.current = rawRequestData.data.page;
       this.totalPages = rawRequestData.data.pageCount;
       this.isLoading = false;
-    },
-    clickImage(id) {
-      console.log(id);
     }
   },
   data() {

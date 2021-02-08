@@ -1,10 +1,7 @@
 <template>
-  <div class="container is-fluid">
-    <div
-      class="columns is-multiline is-justify-content-center"
-      v-if="images.length > 0"
-    >
-      <div class="column is-3 " v-for="image in images" :key="image.id">
+  <div class="container is-fluid mt-5">
+    <div class="imageGrid" v-if="images.length > 0">
+      <div class="photo" v-for="image in images" :key="image.id">
         <grid-image
           :id="image.id"
           :src="image.cropped_picture"
@@ -79,7 +76,7 @@ export default {
         image => image.id == currentId
       );
       if (action === "previous") {
-        if( indexOfCurrentImage - 1 < 0) {
+        if (indexOfCurrentImage - 1 < 0) {
           this.imageId = this.images[9].id;
         } else {
           this.imageId = this.images[indexOfCurrentImage - 1].id;
@@ -114,4 +111,12 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.imageGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  justify-items: center;
+  align-items: center;
+}
+</style>

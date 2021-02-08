@@ -21,10 +21,11 @@
           </b-icon>
         </div>
         <p class="image is-5by3">
-          <single-image
+          <grid-image
             class="image"
             :src="imageData.full_picture"
             :alt="imageData.author"
+            :id="imageId"
           />
         </p>
         <image-details
@@ -43,11 +44,11 @@
 
 <script>
 import api from "@/api";
-import singleImage from "../components/singleImage.vue";
+import gridImage from "../components/gridImage.vue";
 import ImageDetails from "../components/imageDetails.vue";
 
 export default {
-  components: { singleImage, ImageDetails },
+  components: { gridImage, ImageDetails },
   name: "imageDetailPopup",
   props: {
     show: {

@@ -20,8 +20,8 @@ export default {
     }
   },
   methods: {
-    emitId(){
-      this.$emit('imageClick', this.id);
+    emitId() {
+      this.$emit("imageClick", this.id);
     }
   }
 };

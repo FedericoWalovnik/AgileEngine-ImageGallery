@@ -1,12 +1,7 @@
 <template>
-  <div class="container is-fluid imageContainer">
+  <div v-if="show" class="container is-fluid imageContainer">
     <template v-if="!(imageData === '')">
-      <b-modal
-        v-model="isModalActive"
-        :active="isModalActive"
-        @close="handleCloseImage"
-        icon-pack="fa"
-      >
+      <b-modal :active="show" @close="handleCloseImage" icon-pack="fa">
         <div class="is-flex is-justify-content-space-around">
           <b-icon
             class="has-text-white is-clickable"
@@ -43,6 +38,7 @@
       <b-loading :active="isLoading"></b-loading>
     </template>
   </div>
+  <div v-else></div>
 </template>
 
 <script>
@@ -52,7 +48,18 @@ import ImageDetails from "../components/imageDetails.vue";
 
 export default {
   components: { singleImage, ImageDetails },
-  name: "imageDetail",
+  name: "imageDetailPopup",
+  props: {
+    show: {
+      type: Boolean,
+      required: true
+    },
+    imageId: {
+      type: String,
+      required: false,
+      default: ""
+    }
+  },
   data() {
     return {
       imageData: "",
@@ -60,23 +67,33 @@ export default {
       isModalActive: true
     };
   },
+  watch: {
+    async imageId(id){
+      if (id) {
+        try {
+          await api.ensureBearerToken();
+          const imageDetails = await api.getImageDetails(this.imageId);
+          this.imageData = imageDetails.data;
+          console.log(this.imageData);
+          console.log(this.show);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+  },
   methods: {
     handleCloseImage() {
-      this.$router.push({ name: "imageGallery" });
+      this.isModalActive = false;
+      this.$emit("closePopup");
     },
-    nextImage(){ this.$emit('nextImage', this.id); }
-
-  },
-  async mounted() {
-    const id = this.$route.params.imageId;
-    try {
-      await api.ensureBearerToken();
-      const imageDetails = await api.getImageDetails(id);
-      this.imageData = imageDetails.data;
-    } catch (error) {
-      console.error(error);
+    previousImage(){
+      this.$emit('previousImage', this.imageId, 'previous')
+    },
+    nextImage(){
+      this.$emit('nextImage', this.imageId, 'next')
     }
-  }
+  },
 };
 </script>
 

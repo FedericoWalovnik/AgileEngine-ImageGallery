@@ -1,10 +1,17 @@
 <template>
   <div class="container is-fluid">
-    <div class="columns is-multiline is-justify-content-center" v-if="images.length > 0">
+    <div
+      class="columns is-multiline is-justify-content-center"
+      v-if="images.length > 0"
+    >
       <div class="column is-3 " v-for="image in images" :key="image.id">
-        <grid-image :id="image.id" :src="image.cropped_picture" alt="image">
+        <grid-image
+          :id="image.id"
+          :src="image.cropped_picture"
+          alt="image"
+          @imageClick="handleImageClick"
+        >
         </grid-image>
-        <div class="container is-flex is-justify-content-center"></div>
       </div>
     </div>
     <template v-else>
@@ -25,16 +32,24 @@
       icon-pack="fa"
     >
     </b-pagination>
+    <image-detail-popup
+      :show="showPopup"
+      :imageId="imageId"
+      @closePopup="handleClosePopup"
+      @previousImage="changeImage"
+      @nextImage="changeImage"
+    />
   </div>
 </template>
 
 <script>
 import api from "@/api";
 import GridImage from "./gridImage.vue";
+import imageDetailPopup from "./imageDetailPopup.vue";
 
 export default {
   name: "GridGalleryView",
-  components: { GridImage },
+  components: { GridImage, imageDetailPopup },
   methods: {
     async getData(page) {
       try {
@@ -51,6 +66,23 @@ export default {
       this.current = rawRequestData.data.page;
       this.totalElements = rawRequestData.data.pageCount * 10;
       this.isLoading = false;
+    },
+    handleImageClick(clickedImageId) {
+      this.showPopup = true;
+      this.imageId = clickedImageId;
+    },
+    handleClosePopup() {
+      this.showPopup = false;
+    },
+    changeImage(currentId, action) {
+      let indexOfCurrentImage = this.images.findIndex(
+        image => image.id == currentId
+      );
+      if (action === "previous") {
+        this.imageId = this.images[indexOfCurrentImage - 1].id;
+      } else {
+        this.imageId = this.images[indexOfCurrentImage + 1].id;
+      }
     }
   },
   data() {
@@ -58,7 +90,9 @@ export default {
       images: [],
       currentPage: 1,
       totalElements: 26,
-      isLoading: true
+      isLoading: true,
+      showPopup: false,
+      imageId: ""
     };
   },
   watch: {

@@ -8,7 +8,7 @@
             icon="arrow-circle-left"
             size="is-large"
             pack="fa"
-            @click="previousImage"
+            @click.native="previousImage"
           >
           </b-icon>
           <b-icon
@@ -16,7 +16,7 @@
             icon="arrow-circle-right"
             size="is-large"
             pack="fa"
-            @click="nextImage"
+            @click.native="nextImage"
           >
           </b-icon>
         </div>
@@ -74,8 +74,6 @@ export default {
           await api.ensureBearerToken();
           const imageDetails = await api.getImageDetails(this.imageId);
           this.imageData = imageDetails.data;
-          console.log(this.imageData);
-          console.log(this.show);
         } catch (error) {
           console.error(error);
         }
@@ -88,7 +86,7 @@ export default {
       this.$emit("closePopup");
     },
     previousImage(){
-      this.$emit('previousImage', this.imageId, 'previous')
+      this.$emit('previousImage', this.imageId,'previous')
     },
     nextImage(){
       this.$emit('nextImage', this.imageId, 'next')

@@ -79,9 +79,17 @@ export default {
         image => image.id == currentId
       );
       if (action === "previous") {
-        this.imageId = this.images[indexOfCurrentImage - 1].id;
+        if( indexOfCurrentImage - 1 < 0) {
+          this.imageId = this.images[9].id;
+        } else {
+          this.imageId = this.images[indexOfCurrentImage - 1].id;
+        }
       } else {
-        this.imageId = this.images[indexOfCurrentImage + 1].id;
+        if (indexOfCurrentImage + 1 > 9) {
+          this.imageId = this.images[0].id;
+        } else {
+          this.imageId = this.images[indexOfCurrentImage + 1].id;
+        }
       }
     }
   },
